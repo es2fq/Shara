@@ -1,0 +1,6 @@
+C:\Erik\Development\Shara\Shara\bin\Shara.dll.config
+C:\Erik\Development\Shara\Shara\bin\Shara.dll
+C:\Erik\Development\Shara\Shara\bin\Shara.pdb
+C:\Erik\Development\Shara\Shara\obj\Debug\Shara.csprojResolveAssemblyReference.cache
+C:\Erik\Development\Shara\Shara\obj\Debug\Shara.dll
+C:\Erik\Development\Shara\Shara\obj\Debug\Shara.pdb
