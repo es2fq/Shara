@@ -45,6 +45,10 @@ html, body {
         border-color: #4d90fe;
     }
 
+    #searchBox::selection {
+        background: lightblue;
+    }
+
 #target {
     width: 345px;
 }
