@@ -15,7 +15,11 @@ html, body {
 
 /* ids */
 #content {
-    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .controls {
@@ -35,10 +39,11 @@ html, body {
     font-family: Roboto;
     font-size: 15px;
     font-weight: 300;
-    margin-left: 12px;
+    margin-top: 2%;
+    margin-left: 2%;
     padding: 0 11px 0 13px;
     text-overflow: ellipsis;
-    width: 300px;
+    width: 25%;
 }
 
     #searchBox:focus {
