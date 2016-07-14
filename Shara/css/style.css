@@ -13,15 +13,6 @@ html, body {
     transform: translate(-50%, -50%);
 }
 
-/* ids */
-#content {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-
 .controls {
     margin-top: 10px;
     border: 1px solid transparent;
@@ -33,14 +24,28 @@ html, body {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
+/* ids */
+#content {
+    position: absolute;
+    margin-top: 51px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+#container {
+    height: 100%;
+}
+
 #searchBox {
     background-color: #fff;
     color: black;
     font-family: Roboto;
     font-size: 15px;
     font-weight: 300;
-    margin-top: 2%;
-    margin-left: 2%;
+    margin-top: 15px;
+    margin-left: 15px;
     padding: 0 11px 0 13px;
     text-overflow: ellipsis;
     width: 25%;
