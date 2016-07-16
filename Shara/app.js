@@ -1,4 +1,6 @@
 var map;
+var id = null, markers = {};
+var infoBox = null;
 function initMap() {
     map = new google.maps.Map(document.getElementById('content'), {
         center: { lat: 38.8899, lng: -77.009 },
@@ -15,74 +17,13 @@ function initMap() {
 
             map.setCenter(pos);
 
-            var marker = new google.maps.Marker({
-                draggable: true,
-                position: pos,
-                map: map,
-                title: "Your location"
-            });
-
-            var openButton = document.getElementById('infoContainer');
-
-            var infoBox = new google.maps.InfoWindow({
-                content: openButton,
-            });
-
-            /*
-             * The google.maps.event.addListener() event waits for
-             * the creation of the infowindow HTML structure 'domready'
-             * and before the opening of the infowindow defined styles
-             * are applied.
-             */
-            google.maps.event.addListener(infoBox, 'domready', function () {
-
-                // Reference to the DIV which receives the contents of the infowindow using jQuery
-                var iwOuter = $('.gm-style-iw');
-
-                /* The DIV we want to change is above the .gm-style-iw DIV.
-                 * So, we use jQuery and create a iwBackground variable,
-                 * and took advantage of the existing reference to .gm-style-iw for the previous DIV with .prev().
-                 */
-                var iwBackground = iwOuter.prev();
-
-                // Remove the background shadow DIV
-                iwBackground.children(':nth-child(2)').css({ 'display': 'none' });
-
-                // Remove the white background DIV
-                iwBackground.children(':nth-child(4)').css({ 'display': 'none' });
-
-                // Changes the desired color for the tail outline.
-                // The outline of the tail is composed of two descendants of div which contains the tail.
-                // The .find('div').children() method refers to all the div which are direct descendants of the previous div. 
-                iwBackground.children(':nth-child(3)').find('div').children().css({ 'box-shadow': 'black 0px 1px 6px', 'z-index': '1' });
-
-                // Taking advantage of the already established reference to
-                // div .gm-style-iw with iwOuter variable.
-                // You must set a new variable iwCloseBtn.
-                // Using the .next() method of JQuery you reference the following div to .gm-style-iw.
-                // Is this div that groups the close button elements.
-                var iwCloseBtn = iwOuter.next();
-
-                // Apply the desired effect to the close button
-                iwCloseBtn.css({
-                    opacity: '1',
-                    right: '53px', top: '1px'
-                });
-
-                // The API automatically applies 0.7 opacity to the button after the mouseout event.
-                // This function reverses this event to the desired value.
-                iwCloseBtn.mouseout(function () {
-                    $(this).css({ opacity: '1' });
-                });
-            });
-
-            infoBox.open(map, marker);
-
-            marker.addListener('click', function () {
-                infoBox.open(map, marker);
-            });
+            createMarkerWithInfoWindow(map, pos);
         });
     }
+
+    google.maps.event.addListener(map, "click", function (event) {
+        infoBox.close();
+    });
 
     // Create the search box and link it to the UI element.
     var input = document.getElementById('searchBox');
@@ -103,12 +44,21 @@ function initMap() {
         if (places.length == 0) {
             return;
         }
-
+        
         // Clear out the old markers.
         markers.forEach(function (marker) {
             marker.setMap(null);
         });
         markers = [];
+
+        if (places.length == 1) {
+            var pos = places[0].geometry.location;
+
+            createMarkerWithInfoWindow(map, pos);
+            map.setCenter(pos);
+
+            return;
+        }
 
         // For each place, get the icon, name and location.
         var bounds = new google.maps.LatLngBounds();
@@ -138,6 +88,80 @@ function initMap() {
         });
         map.fitBounds(bounds);
     });
+}
+
+function createMarkerWithInfoWindow(map, pos)
+{
+    if (markers[id] != null) deleteMarker(id);
+    if (infoBox != null)
+    {
+        google.maps.event.clearInstanceListeners(infoBox);
+        infoBox.close();
+        infoBox = null;
+    }
+
+    var marker = new google.maps.Marker({
+        draggable: true,
+        position: pos,
+        map: map
+    });
+
+    id = marker.__gm_id;
+    markers[id] = marker;
+
+    var contentString = '<button id="openButton">Create Story</button>'
+
+    infoBox = new google.maps.InfoWindow({
+        content: contentString,
+    });
+
+    /*
+     * The google.maps.event.addListener() event waits for
+     * the creation of the infowindow HTML structure 'domready'
+     * and before the opening of the infowindow defined styles
+     * are applied.
+     */
+    google.maps.event.addListener(infoBox, 'domready', function () {
+
+        // Reference to the DIV which receives the contents of the infowindow using jQuery
+        var iwOuter = $('.gm-style-iw');
+
+        /* The DIV we want to change is above the .gm-style-iw DIV.
+         * So, we use jQuery and create a iwBackground variable,
+         * and took advantage of the existing reference to .gm-style-iw for the previous DIV with .prev().
+         */
+        var iwBackground = iwOuter.prev();
+
+        // Remove the background shadow DIV
+        iwBackground.children(':nth-child(2)').css({ 'display': 'none' });
+
+        // Remove tail shadow
+        iwBackground.children(':nth-child(1)').attr('style', function (i, s) { return s + 'display: none !important;' });
+                        
+        // Taking advantage of the already established reference to
+        // div .gm-style-iw with iwOuter variable.
+        // You must set a new variable iwCloseBtn.
+        // Using the .next() method of JQuery you reference the following div to .gm-style-iw.
+        // Is this div that groups the close button elements.
+        var iwCloseBtn = iwOuter.next();
+
+        // Apply the desired effect to the close button
+        iwCloseBtn.css({
+            display: 'none',
+        });
+    });
+
+    marker.addListener('click', function () {
+        infoBox.open(map, marker);
+    });
+
+    infoBox.open(map, marker);
+}
+
+function deleteMarker(id)
+{
+    marker = markers[id];
+    marker.setMap(null);
 }
 
 window.onload = function () {

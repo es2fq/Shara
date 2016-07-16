@@ -24,12 +24,7 @@ html, body {
 }
 
 .gm-style-iw {
-    top: 14px !important;
-    left: 0 !important;
-    background-color: white;
-    height: 54px;
     text-align: center;
-    width: auto !important;
 }
 
 /* ids */
@@ -53,7 +48,7 @@ html, body {
     border: 0;
     color: black;
     font-size: 24px;
-    padding: 10px 20px 10px 20px;
+    margin-top: 4px;
     text-decoration: none;
 }
 
