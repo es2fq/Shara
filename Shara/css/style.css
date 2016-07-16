@@ -60,6 +60,10 @@ html, body {
         color: darkred;
     }
 
+    #openButton:focus {
+        outline: none;
+    }
+
 #searchBox {
     background-color: #fff;
     color: black;
