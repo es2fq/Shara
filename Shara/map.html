@@ -56,8 +56,28 @@
     </nav>
 
     <div id="container">
-        <div id="content"></div>
-        <input id="searchBox" class="controls" type="text" placeholder="Search" />
+
+        <div id="boxes">
+            <div id="introDialog" class="window">
+                <div id="introContent">
+
+                    <div id="introText">
+
+                    </div>
+
+                    <a href="#" id="closeButton" class="close">Close</a>
+
+                </div>
+            </div>
+
+            <div id="mask"></div>
+        </div>
+
+        <div id="googleMaps">
+            <div id="content"></div>
+            <input id="searchBox" class="controls" type="text" placeholder="Search" />
+        </div>
+
     </div>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoeg5Ucj8Yoanh75dhSHfG4dN5AY0ArWE&libraries=places&sensors=false&callback=initMap"
