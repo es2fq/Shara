@@ -4,6 +4,16 @@ html, body {
     overflow: hidden;
 }
 
+body {
+    opacity: 1;
+    transition: 0.5s;
+}
+
+    body.fade-out {
+        opacity: 0;
+        transition: none;
+    }
+
 /* classes */
 .centered {
     position: fixed;

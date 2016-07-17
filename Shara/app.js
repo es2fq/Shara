@@ -100,10 +100,13 @@ function createMarkerWithInfoWindow(map, pos)
         infoBox = null;
     }
 
+    var iconBase = 'img/map-marker.png';
+
     var marker = new google.maps.Marker({
         draggable: true,
         position: pos,
-        map: map
+        map: map,
+        icon: iconBase
     });
 
     id = marker.__gm_id;
@@ -165,6 +168,7 @@ function deleteMarker(id)
 }
 
 window.onload = function () {
-    var elem = document.getElementById('content');
-
+    $(function () {
+        $('body').removeClass('fade-out');
+    });
 };
