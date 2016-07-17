@@ -112,7 +112,7 @@ function createMarkerWithInfoWindow(map, pos)
     id = marker.__gm_id;
     markers[id] = marker;
 
-    var contentString = '<button id="openButton">Create Story</button>'
+    var contentString = '<button id="openButton" onclick="openStoryWindow();">Create Story</button>'
 
     infoBox = new google.maps.InfoWindow({
         content: contentString,
@@ -170,6 +170,9 @@ function deleteMarker(id)
 function showWindow(id)
 {
     $(document).ready(function () {
+
+        //Set window as active
+        $(id).addClass('active');
         
         //Get the screen height and width
         var maskHeight = $(document).height();
@@ -193,21 +196,23 @@ function showWindow(id)
         $(id).fadeIn(1000);
 
         //if close button is clicked
-        $('.window .close').click(function (e) {
+        $('.window.active .close').click(function (e) {
             //Cancel the link behavior
             e.preventDefault();
             $('#mask, .window').hide();
+            $(id).removeClass('active');
         });
 
         //if mask is clicked
         $('#mask').click(function () {
             $(this).hide();
             $('.window').hide();
+            $(id).removeClass('active');
         });
 
         $(window).resize(function () {
 
-            var box = $('#boxes .window');
+            var box = $('#boxes .window.active');
 
             //Get the screen height and width
             var maskHeight = $(document).height();
@@ -226,6 +231,11 @@ function showWindow(id)
 
         });
     });
+}
+
+function openStoryWindow()
+{
+    showWindow('#storyDialog');
 }
 
 window.onload = function () {
