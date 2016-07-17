@@ -167,13 +167,10 @@ function deleteMarker(id)
     marker.setMap(null);
 }
 
-function showWindow()
+function showWindow(id)
 {
     $(document).ready(function () {
-
-        //Get the A tag
-        var id = '#introDialog';
-
+        
         //Get the screen height and width
         var maskHeight = $(document).height();
         var maskWidth = $(window).width();
@@ -233,7 +230,7 @@ function showWindow()
 
 window.onload = function () {
     
-    showWindow();
+    showWindow('#introDialog');
 
     $(function () {
         $('body').removeClass('fade-out');

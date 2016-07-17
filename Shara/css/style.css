@@ -56,11 +56,23 @@ body {
     }
 
     #boxes #introContent {
+        width: 100%;
+        height: 100%;
         padding: 20px;
     }
 
     #boxes #introText {
+        width: 80%;
+        height: 90%;
+        margin: 0 auto;
+        margin-top: 40px;
+    }
 
+    #boxes #introInstructions {
+        width: 100%;
+        height: 75%;
+        overflow-y: auto;
+        word-wrap: break-word;
     }
 
     #boxes #closeButton {
