@@ -1,12 +1,14 @@
 var map;
 var id = null, markers = {};
 var infoBox = null;
+var mapStyle = [{ "featureType": "all", "elementType": "all", "stylers": [{ "hue": "#ff0000" }, { "saturation": -100 }, { "lightness": -30 }] }, { "featureType": "all", "elementType": "labels.text.fill", "stylers": [{ "color": "#ffffff" }] }, { "featureType": "all", "elementType": "labels.text.stroke", "stylers": [{ "color": "#353535" }] }, { "featureType": "landscape", "elementType": "geometry", "stylers": [{ "color": "#656565" }] }, { "featureType": "poi", "elementType": "geometry.fill", "stylers": [{ "color": "#505050" }] }, { "featureType": "poi", "elementType": "geometry.stroke", "stylers": [{ "color": "#808080" }] }, { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#454545" }] }, { "featureType": "transit", "elementType": "labels", "stylers": [{ "hue": "#000000" }, { "saturation": 100 }, { "lightness": -40 }, { "invert_lightness": true }, { "gamma": 1.5 }] }];
+
 function initMap() {
     map = new google.maps.Map(document.getElementById('content'), {
         center: { lat: 38.8899, lng: -77.009 },
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         zoom: 16,
-        styles: [{ "featureType": "all", "elementType": "all", "stylers": [{ "hue": "#ff0000" }, { "saturation": -100 }, { "lightness": -30 }] }, { "featureType": "all", "elementType": "labels.text.fill", "stylers": [{ "color": "#ffffff" }] }, { "featureType": "all", "elementType": "labels.text.stroke", "stylers": [{ "color": "#353535" }] }, { "featureType": "landscape", "elementType": "geometry", "stylers": [{ "color": "#656565" }] }, { "featureType": "poi", "elementType": "geometry.fill", "stylers": [{ "color": "#505050" }] }, { "featureType": "poi", "elementType": "geometry.stroke", "stylers": [{ "color": "#808080" }] }, { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#454545" }] }, { "featureType": "transit", "elementType": "labels", "stylers": [{ "hue": "#000000" }, { "saturation": 100 }, { "lightness": -40 }, { "invert_lightness": true }, { "gamma": 1.5 }] }]
+        styles: mapStyle
     });
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -236,9 +238,49 @@ function showWindow(id)
 function openStoryWindow()
 {
     showWindow('#storyDialog');
+
+    var storyMap = document.getElementById('storyMap');
+    var container = document.getElementById('storySect2');
+
+    var lat = markers[id].getPosition().lat();
+    var lng = markers[id].getPosition().lng();
+    var width = storyMap.offsetWidth;
+    var height = storyMap.offsetHeight;
+    var style = getStaticMapStyle(mapStyle);
+
+    storyMap.src = 'http://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + lng +
+        '&size=' + width + 'x' + height +
+        '&zoom=' + (map.getZoom() - 1) +
+        '&maptype=' + map.getMapTypeId() +
+        '&key=AIzaSyAoeg5Ucj8Yoanh75dhSHfG4dN5AY0ArWE' +
+        '&sensor=false' +
+        '&markers=icon:/img/map-marker.png|' + lat + ',' + lng +
+        '&style=' + style;
+}
+
+function getStaticMapStyle(styles) {
+    var result = [];
+    styles.forEach(function (v, i, a) {
+        var style = '';
+        if (v.stylers.length > 0) { // Needs to have a style rule to be valid.
+            style += (v.hasOwnProperty('featureType') ? 'feature:' + v.featureType : 'feature:all') + '|';
+            style += (v.hasOwnProperty('elementType') ? 'element:' + v.elementType : 'element:all') + '|';
+            v.stylers.forEach(function (val, i, a) {
+                var propertyname = Object.keys(val)[0];
+                var propertyval = val[propertyname].toString().replace('#', '0x');
+                style += propertyname + ':' + propertyval + '|';
+            });
+        }
+        result.push('style=' + encodeURIComponent(style))
+    });
+
+    return result.join('&');
 }
 
 window.onload = function () {
+    var elem = document.getElementById('storyTime');
+    var timer = new Timer(elem);
+    timer.start();
     
     showWindow('#introDialog');
 
@@ -246,3 +288,42 @@ window.onload = function () {
         $('body').removeClass('fade-out');
     });
 };
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var Timer = (function () {
+    function Timer(element) {
+        this.span = element;
+        this.span.id = 'storyTime';
+        this.span.innerText = "This story will be published on " + getDateTimeString();
+    }
+    Timer.prototype.start = function () {
+        var _this = this;
+        this.timerToken = setInterval(function () { return _this.span.innerHTML = "This story will be published on " + getDateTimeString(); }, 500);
+    };
+    Timer.prototype.stop = function () {
+        clearTimeout(this.timerToken);
+    };
+    return Timer;
+}());
+
+function getDateTimeString() {
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    
+    var date    = new Date();
+    var dayName = days[date.getDay()];
+    var dayNum  = date.getDate();
+    var month   = months[date.getMonth()];
+    var year    = date.getFullYear();
+    var hours   = date.getHours();
+    var minutes = date.getMinutes();
+    var seconds = date.getSeconds();
+
+    if (hours == 12) hours = 12; else hours = hours % 12;
+    if (minutes < 10) minutes = "0" + minutes;
+    if (seconds < 10) seconds = "0" + seconds;
+
+    var str = dayName + ", " + dayNum + " " + month + " " + year + " " + hours + ":" + minutes + ":" + seconds;
+    return str;
+}

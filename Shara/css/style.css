@@ -14,6 +14,20 @@ body {
         transition: none;
     }
 
+::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+
 /* classes */
 .centered {
     position: fixed;
@@ -82,7 +96,7 @@ body {
     }
 
     #boxes #storyDialog {
-        width: 80%;
+        width: 70%;
         height: 80%;
         background: white;
         color: black;
@@ -94,11 +108,105 @@ body {
         padding: 20px;
     }
 
+    #boxes #storyTag {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+    }
+
     #boxes #storyText {
-        width: 80%;
+        width: 90%;
         height: 90%;
+        border: 1px;
         margin: 0 auto;
         margin-top: 40px;
+    }
+
+    #boxes #storySect1 {
+        width: 100%;
+        height: 20%;
+        margin: 0 auto;
+        position: relative;
+        text-align: center;
+    }
+    
+    #boxes #storySect2 {
+        width: 40%;
+        height: 65%;
+        float: left;
+        position: relative;
+    }
+
+    #boxes #storySect3 {
+        width: 60%;
+        height: 65%;
+        float: right;
+        position: relative;
+    }
+
+    #boxes #storySect4 {
+        width: 100%;
+        height: 15%;
+        clear: both;
+        position: relative;
+    }
+
+    #boxes #storyTitle {
+        width: 100%;
+        height: 75%;
+        border: none;
+        border-bottom: solid 2px #c9c9c9;
+        font-size: 32px;
+        outline: none;
+        padding: 10px;
+        transition: border 0.3s;
+    }
+
+        #boxes #storyTitle:focus {
+            border-bottom: solid 2px #969696;
+        }
+
+        #boxes #storyTitle::selection {
+            background: lightblue;
+        }
+
+    #boxes #storyMap {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+    }
+
+    #boxes #storyDescription {
+        width: 100%;
+        height: 100%;
+        border: solid 5px #c9c9c9;
+        font-size: 20px;
+        padding: 10px;
+        position: absolute;
+        resize: none;
+        transition: border 0.3s;
+    }
+
+        #boxes #storyDescription:focus {
+            border: solid 5px #969696;
+        }    
+
+        #boxes #storyDescription::selection {
+            background: lightblue;
+        }
+
+    #boxes #storyDate {
+        width: 60%;
+        height: 75%;
+        border: solid;
+        bottom: 0;
+        float: left;
+        position: absolute;
+        text-align: center;
+    }
+
+    #boxes #storyTime {
+        font-size: 18px;
     }
 
 #content {
