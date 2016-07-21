@@ -281,11 +281,14 @@ window.onload = function () {
     var elem = document.getElementById('storyTime');
     var timer = new Timer(elem);
     timer.start();
+
+    monitorWindowSize();
     
     showWindow('#introDialog');
 
     $(function () {
         $('body').removeClass('fade-out');
+        $('body').attr('onresize', 'monitorWindowSize()')
     });
 };
 
@@ -326,4 +329,41 @@ function getDateTimeString() {
 
     var str = dayName + ", " + dayNum + " " + month + " " + year + " " + hours + ":" + minutes + ":" + seconds;
     return str;
+}
+
+function monitorWindowSize() {
+    var screenWidth  = screen.width;
+    var screenHeight = screen.height;
+
+    var windowWidth = window.innerWidth;
+    var windowHeight = window.innerHeight;
+
+    makeChanges(screenWidth, screenHeight);
+    makeChanges(windowWidth, windowHeight);
+}
+
+function makeChanges(width, height) {
+    if (width < 610)
+        $('#introTag').css('display', 'none');
+    else
+        $('#introTag').css('display', 'block');
+
+    if (width < 420)
+        $('#storyTag').css('display', 'none');
+    else
+        $('#storyTag').css('display', 'block');
+
+    if (width < 670)
+        $('#storyTime').css('display', 'none');
+    else
+        $('#storyTime').css('display', 'block');
+
+    if (width < 715) {
+        $('#storySect2').css('display', 'none');
+        $('#storySect3').css('width', '100%');
+    }
+    else {
+        $('#storySect2').css('display', 'block');
+        $('#storySect3').css('width', '60%');
+    }
 }
