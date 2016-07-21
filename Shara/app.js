@@ -295,11 +295,11 @@ var Timer = (function () {
     function Timer(element) {
         this.span = element;
         this.span.id = 'storyTime';
-        this.span.innerText = "This story will be published on " + getDateTimeString();
+        this.span.innerText = getDateTimeString();
     }
     Timer.prototype.start = function () {
         var _this = this;
-        this.timerToken = setInterval(function () { return _this.span.innerHTML = "This story will be published on " + getDateTimeString(); }, 500);
+        this.timerToken = setInterval(function () { return _this.span.innerHTML = getDateTimeString(); }, 500);
     };
     Timer.prototype.stop = function () {
         clearTimeout(this.timerToken);

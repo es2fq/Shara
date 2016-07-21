@@ -17,15 +17,15 @@ body {
 ::-webkit-scrollbar {
     width: 12px;
 }
- 
+
 ::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
     border-radius: 10px;
 }
- 
+
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
 }
 
 /* classes */
@@ -88,11 +88,26 @@ body {
         margin-top: 40px;
     }
 
+    #boxes #introTag {
+        cursor: default;
+        user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
+    }
+
     #boxes #introInstructions {
         width: 100%;
         height: 75%;
+        cursor: default;
         overflow-y: auto;
         word-wrap: break-word;
+        user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
     }
 
     #boxes #storyDialog {
@@ -110,8 +125,14 @@ body {
 
     #boxes #storyTag {
         position: absolute;
-        top: 18px;
+        cursor: default;
         left: 18px;
+        top: 18px;
+        user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
     }
 
     #boxes #storyText {
@@ -129,24 +150,24 @@ body {
         position: relative;
         text-align: center;
     }
-    
+
     #boxes #storySect2 {
         width: 40%;
-        height: 65%;
+        height: 70%;
         float: left;
         position: relative;
     }
 
     #boxes #storySect3 {
         width: 60%;
-        height: 65%;
+        height: 70%;
         float: right;
         position: relative;
     }
 
     #boxes #storySect4 {
         width: 100%;
-        height: 15%;
+        height: 10%;
         clear: both;
         position: relative;
     }
@@ -189,7 +210,7 @@ body {
 
         #boxes #storyDescription:focus {
             border: solid 5px #969696;
-        }    
+        }
 
         #boxes #storyDescription::selection {
             background: lightblue;
@@ -198,16 +219,77 @@ body {
     #boxes #storyDate {
         width: 60%;
         height: 75%;
-        border: solid;
         bottom: 0;
         float: left;
+        font-size: 14px;
         position: absolute;
-        text-align: center;
     }
 
     #boxes #storyTime {
+        width: 100%;
+        border-bottom: solid 2px #c9c9c9;
+        bottom: 0;
+        cursor: default;
         font-size: 18px;
+        position: absolute;
+        user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
     }
+
+    #boxes #storyNext {
+        width: 40%;
+        height: 100%;
+        bottom: 0;
+        border-bottom: solid 2px #c9c9c9;
+        float: right;
+        position: absolute;
+        right: 0;
+    }
+
+    #boxes #storyPublish {
+        background: white;
+        border: none;
+        bottom: 0;
+        color: black;
+        cursor: pointer;
+        font-size: 24px;
+        position: absolute;
+        right: 0;
+        transition: all 0.5s;
+    }
+
+        #boxes #storyPublish span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+            #boxes #storyPublish span:after {
+                content: '»';
+                position: absolute;
+                opacity: 0;
+                top: 0;
+                right: -20px;
+                transition: 0.5s;
+            }
+
+        #boxes #storyPublish:hover span {
+            padding-right: 25px;
+        }
+
+            #boxes #storyPublish:hover span:after {
+                opacity: 1;
+                right: 0;
+            }
+
+        #boxes #storyPublish:focus {
+            outline: none;
+        }
+
 
 #content {
     position: absolute;
