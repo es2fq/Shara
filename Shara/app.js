@@ -402,7 +402,7 @@ function publishStory() {
     var lng = markers[id].getPosition().lng();
 
     $.ajax({
-        url: 'publish.php',
+        url: 'https://es2fq.github.io/Shara/Shara/publish.php',
         type: 'POST',
         data: "title=" + title + "&story=" + story + "&lat=" + lat + "&lng=" + lng,
         success: function (result) {
