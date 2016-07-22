@@ -248,7 +248,7 @@ function openStoryWindow() {
     var height = storyMap.offsetHeight;
     var style = getStaticMapStyle(mapStyle);
 
-    storyMap.src = 'http://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + lng +
+    storyMap.src = 'https://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + lng +
         '&size=' + width + 'x' + height +
         '&zoom=' + (map.getZoom() - 1) +
         '&maptype=' + map.getMapTypeId() +
