@@ -404,7 +404,7 @@ function publishStory() {
     $.ajax({
         url: 'publish.php',
         type: 'POST',
-        data: "title=" + title + "&story=" + story + "&lat=" + lag + "&lng=" + lng,
+        data: "title=" + title + "&story=" + story + "&lat=" + lat + "&lng=" + lng,
         success: function (result) {
             alert('success');
         },
