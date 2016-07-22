@@ -374,11 +374,42 @@ function makeChanges(width, height) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function publishStory() {
+function publishDialog() {
     alertify.dialog('confirm').set({
         message: 'Are you sure you want to publish this story?',
         labels: { ok: 'Publish', cancel: 'Cancel' },
+        onok: function (closeEvent) { publishStory(); },
         title: "Publish",
         transition: 'fade',
     }).show();
+}
+
+function publishStory() {
+    var title = document.getElementById('storyTitle').value;
+    var story = document.getElementById('storyDescription').value;
+
+    if (story == "")
+    {
+        alertify.dialog('alert').set({
+            message: 'Your story is blank!',
+            title: "Publish",
+            transition: 'fade',
+        }).show();
+        return;
+    }
+
+    var lat = markers[id].getPosition().lat();
+    var lng = markers[id].getPosition().lng();
+
+    $.ajax({
+        url: 'publish.php',
+        type: 'POST',
+        data: "title=" + title + "&story=" + story + "&lat=" + lag + "&lng=" + lng,
+        success: function (result) {
+            alert('success');
+        },
+        error: function (error) {
+            alert('error');
+        }
+    });
 }
