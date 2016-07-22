@@ -169,13 +169,14 @@ function deleteMarker(id)
     marker.setMap(null);
 }
 
-function showWindow(id)
-{
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function showWindow(id) {
     $(document).ready(function () {
 
         //Set window as active
         $(id).addClass('active');
-        
+
         //Get the screen height and width
         var maskHeight = $(document).height();
         var maskWidth = $(window).width();
@@ -235,8 +236,7 @@ function showWindow(id)
     });
 }
 
-function openStoryWindow()
-{
+function openStoryWindow() {
     showWindow('#storyDialog');
 
     var storyMap = document.getElementById('storyMap');
@@ -276,6 +276,8 @@ function getStaticMapStyle(styles) {
 
     return result.join('&');
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 window.onload = function () {
     var elem = document.getElementById('storyTime');
@@ -331,6 +333,8 @@ function getDateTimeString() {
     return str;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 function monitorWindowSize() {
     var screenWidth  = screen.width;
     var screenHeight = screen.height;
@@ -366,4 +370,15 @@ function makeChanges(width, height) {
         $('#storySect2').css('display', 'block');
         $('#storySect3').css('width', '60%');
     }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function publishStory() {
+    alertify.dialog('confirm').set({
+        message: 'Are you sure you want to publish this story?',
+        labels: { ok: 'Publish', cancel: 'Cancel' },
+        title: "Publish",
+        transition: 'fade',
+    }).show();
 }
