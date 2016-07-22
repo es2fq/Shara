@@ -401,14 +401,17 @@ function publishStory() {
     var lat = markers[id].getPosition().lat();
     var lng = markers[id].getPosition().lng();
 
+    var url = "publish.php";
+    var params = "title=" + title + "&story=" + story + "&lat=" + lat + "&lng=" + lng;
+
     $.ajax({
-        url: 'https://es2fq.github.io/Shara/Shara/publish.php',
+        url: url,
         type: 'POST',
-        data: "title=" + title + "&story=" + story + "&lat=" + lat + "&lng=" + lng,
-        success: function (result) {
+        data: params,
+        success: function () {
             alert('success');
         },
-        error: function (error) {
+        error: function () {
             alert('error');
         }
     });
