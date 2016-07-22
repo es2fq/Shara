@@ -405,7 +405,7 @@ function publishStory() {
     var params = "title=" + title + "&story=" + story + "&lat=" + lat + "&lng=" + lng;
 
     $.ajax({
-        url: "https://es2fq.github.io/Shara/Shara/publish.php",
+        url: url,
         type: 'POST',
         data: params,
         success: function () {
