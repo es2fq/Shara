@@ -1,6 +1,7 @@
 var map;
 var id = null, markers = {};
 var infoBox = null;
+var infoWindows = [];
 var mapStyle = [{ "featureType": "all", "elementType": "all", "stylers": [{ "hue": "#ff0000" }, { "saturation": -100 }, { "lightness": -30 }] }, { "featureType": "all", "elementType": "labels.text.fill", "stylers": [{ "color": "#ffffff" }] }, { "featureType": "all", "elementType": "labels.text.stroke", "stylers": [{ "color": "#353535" }] }, { "featureType": "landscape", "elementType": "geometry", "stylers": [{ "color": "#656565" }] }, { "featureType": "poi", "elementType": "geometry.fill", "stylers": [{ "color": "#505050" }] }, { "featureType": "poi", "elementType": "geometry.stroke", "stylers": [{ "color": "#808080" }] }, { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#454545" }] }, { "featureType": "transit", "elementType": "labels", "stylers": [{ "hue": "#000000" }, { "saturation": 100 }, { "lightness": -40 }, { "invert_lightness": true }, { "gamma": 1.5 }] }];
 
 function initMap() {
@@ -19,12 +20,14 @@ function initMap() {
 
             map.setCenter(pos);
 
-            createMarkerWithInfoWindow(map, pos);
+            createMarkerWithStoryButton(map, pos);
         });
     }
 
     google.maps.event.addListener(map, "click", function (event) {
         infoBox.close();
+        for (i = 0; i < infoWindows.length; i++)
+            infoWindows[i].close();
     });
 
     // Create the search box and link it to the UI element.
@@ -56,7 +59,7 @@ function initMap() {
         if (places.length == 1) {
             var pos = places[0].geometry.location;
 
-            createMarkerWithInfoWindow(map, pos);
+            createMarkerWithStoryButton(map, pos);
             map.setCenter(pos);
 
             return;
@@ -92,7 +95,7 @@ function initMap() {
     });
 }
 
-function createMarkerWithInfoWindow(map, pos)
+function createMarkerWithStoryButton(map, pos)
 {
     if (markers[id] != null) deleteMarker(id);
     if (infoBox != null)
@@ -131,6 +134,9 @@ function createMarkerWithInfoWindow(map, pos)
         // Reference to the DIV which receives the contents of the infowindow using jQuery
         var iwOuter = $('.gm-style-iw');
 
+        // Set text to center
+        iwOuter.css({ 'text-align': 'center' });
+
         /* The DIV we want to change is above the .gm-style-iw DIV.
          * So, we use jQuery and create a iwBackground variable,
          * and took advantage of the existing reference to .gm-style-iw for the previous DIV with .prev().
@@ -157,16 +163,118 @@ function createMarkerWithInfoWindow(map, pos)
     });
 
     marker.addListener('click', function () {
+        closeBlueMarkerWindows();
         infoBox.open(map, marker);
     });
 
     infoBox.open(map, marker);
 }
 
+function createBlueMarker(map, pos, title, desc) {
+    var iconBase = 'img/map-marker2.png';
+
+    var marker = new google.maps.Marker({
+        draggable: false,
+        position: pos,
+        map: map,
+        icon: iconBase
+    });
+
+    var contentString = 
+        '<div id="blueMarker">' +
+            '<div id="title">' + title + '</div>' +
+            '<div id="description">' + desc + '</div>' +
+        '</div>';
+
+    var infoWindow = new google.maps.InfoWindow({
+        content: contentString,
+    });
+    infoWindows.push(infoWindow);
+
+    /*
+     * The google.maps.event.addListener() event waits for
+     * the creation of the infowindow HTML structure 'domready'
+     * and before the opening of the infowindow defined styles
+     * are applied.
+     */
+    google.maps.event.addListener(infoWindow, 'domready', function () {
+
+        // Reference to the DIV which receives the contents of the infowindow using jQuery
+        var iwOuter = $('.gm-style-iw');
+
+        /* The DIV we want to change is above the .gm-style-iw DIV.
+         * So, we use jQuery and create a iwBackground variable,
+         * and took advantage of the existing reference to .gm-style-iw for the previous DIV with .prev().
+         */
+        var iwBackground = iwOuter.prev();
+
+        // Remove the background shadow DIV
+        iwBackground.children(':nth-child(2)').css({ 'display': 'none' });
+
+        // Remove tail shadow
+        iwBackground.children(':nth-child(1)').attr('style', function (i, s) { return s + 'display: none !important;' });
+
+        // Taking advantage of the already established reference to
+        // div .gm-style-iw with iwOuter variable.
+        // You must set a new variable iwCloseBtn.
+        // Using the .next() method of JQuery you reference the following div to .gm-style-iw.
+        // Is this div that groups the close button elements.
+        var iwCloseBtn = iwOuter.next();
+
+        // Apply the desired effect to the close button
+        iwCloseBtn.css({
+            display: 'none'
+        });
+    });
+
+    marker.addListener('click', function () {
+        if (isInfoWindowOpen(infoBox))
+            infoBox.close();
+        closeBlueMarkerWindows();
+        infoWindow.open(map, marker);
+    });
+}
+
+function getMarkersFromFile() {
+    var file = "markers.txt";
+
+    $.get(file, function (data) {
+        var text = data.split('\n');
+        
+        for (i = 0; i < text.length; i++)
+        {
+            var line = text[i].split(',');
+            if (line.length != 4) return;
+
+            var lat = parseFloat(line[0]);
+            var lng = parseFloat(line[1]);
+
+            var title = line[2];
+            var desc  = line[3];
+
+            createBlueMarker(map, { lat: lat, lng: lng }, title, desc);
+        }
+    }, 'text');
+}
+
 function deleteMarker(id)
 {
     marker = markers[id];
     marker.setMap(null);
+}
+
+function isInfoWindowOpen(window)
+{
+    var info = window.getMap();
+    return (info !== null && typeof info !== "undefined");
+}
+
+function closeBlueMarkerWindows() {
+    for (i = 0; i < infoWindows.length; i++)
+    {
+        if (isInfoWindowOpen(infoWindows[i]))
+            infoWindows[i].close();
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -285,8 +393,8 @@ window.onload = function () {
     timer.start();
 
     monitorWindowSize();
-    
     showWindow('#introDialog');
+    getMarkersFromFile();
 
     $(function () {
         $('body').removeClass('fade-out');
@@ -412,7 +520,7 @@ function publishStory() {
             alert('success');
         },
         error: function () {
-            alert('error');
+            
         }
     });
 }

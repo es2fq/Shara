@@ -47,11 +47,25 @@ body {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-.gm-style-iw {
-    text-align: center;
+/* ids */
+
+#blueMarker {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    width: 200px;
+    height: 200px;
+    background: white;
+    border: solid;
+    color: black;
 }
 
-/* ids */
+    #blueMarker #title {
+
+    }
+
+    #blueMarker #desc {
+
+    }
 
 #boxes {
 }
@@ -319,7 +333,7 @@ body {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     background: white;
-    border: 0;
+    border: none;
     color: black;
     font-size: 24px;
     margin-top: 4px;
