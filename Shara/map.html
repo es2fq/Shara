@@ -64,11 +64,11 @@
                         <hr /><br />
                         <div id="introInstructions">
                             <h2 id="introTag">Instructions</h2>
-                            <p><img src="img/map-marker.png" />— Your Marker</p>
-                            <p><img src="img/map-marker2.png" />— Other Stories</p>
+                            <p><img id="imgMarker1" src="img/map-marker.png" />— Your Marker</p>
+                            <p><img id="imgMarker2" src="img/map-marker2.png" />— Other Stories</p>
                             <p>1. Use the search bar to find a location.</p>
                             <p>2. Drag to reposition your marker.</p>
-                            <p>3. Click the button to create your story!</p>
+                            <p>3. Click the 'Create Story' to begin!</p>
                             <p>*Allow location to automatically set a marker at your location</p>
                             <p>*Click on the map to close any window boxes</p>
                         </div>
@@ -81,7 +81,7 @@
                     <h3 id="storyTag">Shara Story</h3>
                     <div id="storyText">
                         <div id="storySect1">
-                            <input id="storyTitle" placeholder="Title" />
+                            <input id="storyTitle" maxlength="25" placeholder="Title (max 25 chars.)" />
                         </div>
                         <div id="storySect2">
                             <img id="storyMap" />

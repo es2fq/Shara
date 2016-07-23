@@ -52,19 +52,30 @@ body {
 #blueMarker {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
-    width: 200px;
-    height: 200px;
     background: white;
-    border: solid;
     color: black;
+    max-width: 300px;
 }
 
     #blueMarker #title {
-
+        font-size: 24px;
+        margin-top: 15px;
+        text-align: left;
+        word-wrap: break-word;
     }
 
     #blueMarker #desc {
-
+        border-left: solid 2px #c9c9c9;
+        color: black;
+        font-size: 16px;
+        max-height: 200px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        overflow-y: auto;
+        padding-left: 20px;
+        padding-right: 20px;
+        text-align: left;
+        word-wrap: break-word;
     }
 
 #boxes {
@@ -322,6 +333,15 @@ body {
     height: 100%;
 }
 
+#imgMarker1 {
+
+}
+
+#imgMarker2 {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 #mask {
     position: absolute;
     z-index: 9000;
@@ -334,18 +354,18 @@ body {
     -moz-border-radius: 0;
     background: white;
     border: none;
-    color: black;
+    color: #ff0000;
     font-size: 24px;
     margin-top: 4px;
     text-decoration: none;
 }
 
     #openButton:hover {
-        color: red;
+        color: #800000;
     }
 
     #openButton:active {
-        color: darkred;
+        color: #4d0000;
     }
 
     #openButton:focus {

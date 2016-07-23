@@ -183,7 +183,7 @@ function createBlueMarker(map, pos, title, desc) {
     var contentString = 
         '<div id="blueMarker">' +
             '<div id="title">' + title + '</div>' +
-            '<div id="description">' + desc + '</div>' +
+            '<div id="desc">' + desc + '</div>' +
         '</div>';
 
     var infoWindow = new google.maps.InfoWindow({
@@ -201,6 +201,9 @@ function createBlueMarker(map, pos, title, desc) {
 
         // Reference to the DIV which receives the contents of the infowindow using jQuery
         var iwOuter = $('.gm-style-iw');
+
+        // Set text to center
+        iwOuter.css({ 'text-align': 'center' });
 
         /* The DIV we want to change is above the .gm-style-iw DIV.
          * So, we use jQuery and create a iwBackground variable,
