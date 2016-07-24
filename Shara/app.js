@@ -489,12 +489,14 @@ function makeChanges(width, height) {
         $('#storyDialog').css('width', '100%');
 
         $('#introText').css('width', '100%');
+        $('#storyText').css('width', '100%');
     }
     else {
         $('#introDialog').css('width', '60%');
         $('#storyDialog').css('width', '70%');
 
         $('#introText').css('width', '80%');
+        $('#storyText').css('width', '90%');
     }
 
     if (height < 600) {
