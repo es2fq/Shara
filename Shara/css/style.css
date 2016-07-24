@@ -57,9 +57,16 @@ body {
     max-width: 300px;
 }
 
+    #blueMarker #time {
+        font-size: 18px;
+        margin-top: 15px;
+        text-align: left;
+        word-wrap: break-word;
+    }
+
     #blueMarker #title {
         font-size: 24px;
-        margin-top: 15px;
+        margin-top: 10px;
         text-align: left;
         word-wrap: break-word;
     }

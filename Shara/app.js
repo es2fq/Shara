@@ -170,7 +170,7 @@ function createMarkerWithStoryButton(map, pos)
     infoBox.open(map, marker);
 }
 
-function createBlueMarker(map, pos, title, desc) {
+function createBlueMarker(map, pos, title, desc, time) {
     var iconBase = 'img/map-marker2.png';
 
     var marker = new google.maps.Marker({
@@ -182,6 +182,7 @@ function createBlueMarker(map, pos, title, desc) {
 
     var contentString = 
         '<div id="blueMarker">' +
+            '<div id="time">' + time + '</div>' +
             '<div id="title">' + title + '</div>' +
             '<div id="desc">' + desc + '</div>' +
         '</div>';
@@ -247,17 +248,19 @@ function getMarkersFromFile() {
         for (i = 0; i < text.length; i++)
         {
             var line = text[i].split('|||');
-            if (line.length != 4) return;
+            if (line.length != 5) return;
 
             var lat = parseFloat(line[0]);
             var lng = parseFloat(line[1]);
 
             var title = line[2];
             var story = line[3];
+            
+            var time = line[4];
 
             story = story.split("\\n").join("<br />");
 
-            createBlueMarker(map, { lat: lat, lng: lng }, title, story);
+            createBlueMarker(map, { lat: lat, lng: lng }, title, story, time);
         }
     }, 'text');
 }
@@ -545,6 +548,8 @@ function publishStory() {
     var lat = markers[id].getPosition().lat().toString();
     var lng = markers[id].getPosition().lng().toString();
 
+    var time = getDateTimeString();
+
     var url = "publish.php";
 
     $.ajax({
@@ -554,7 +559,8 @@ function publishStory() {
             lat: lat,
             lng: lng,
             title: title,
-            story: story
+            story: story,
+            time: time
         },
         success: function () {
             alertify.dialog('alert').set({
@@ -562,7 +568,7 @@ function publishStory() {
                 title: "Congratulations!",
                 transition: 'fade',
             }).show();
-            createBlueMarker(map, { lat: parseFloat(lat), lng: parseFloat(lng) }, title, story);
+            createBlueMarker(map, { lat: parseFloat(lat), lng: parseFloat(lng) }, title, story, time);
             infoBox.close();
             deleteMarker(id);
             $('#mask, .window').hide();
