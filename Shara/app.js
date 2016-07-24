@@ -256,7 +256,6 @@ function getMarkersFromFile() {
             var story = line[3];
 
             story = story.split("\\n").join("<br />");
-            console.log(story);
 
             createBlueMarker(map, { lat: lat, lng: lng }, title, story);
         }
@@ -512,21 +511,36 @@ function publishStory() {
         return;
     }
 
-    var lat = markers[id].getPosition().lat();
-    var lng = markers[id].getPosition().lng();
+    var lat = markers[id].getPosition().lat().toString();
+    var lng = markers[id].getPosition().lng().toString();
 
     var url = "publish.php";
-    var params = "title=" + title + "&story=" + story + "&lat=" + lat + "&lng=" + lng;
 
     $.ajax({
         url: url,
         type: 'POST',
-        data: params,
-        success: function () {
-            alert('success');
+        data: {
+            lat: lat,
+            lng: lng,
+            title: title,
+            story: story
         },
-        error: function () {
-            
+        success: function () {
+            alertify.dialog('alert').set({
+                message: 'Your story has been published!',
+                title: "Congratulations!",
+                transition: 'fade',
+            }).show();
+            createBlueMarker(map, { lat: parseFloat(lat), lng: parseFloat(lng) }, title, story);
+            infoBox.close();
+            deleteMarker(id);
+            $('#mask, .window').hide();
+            $(id).removeClass('active');
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status);
+            console.log(xhr.responseText);
+            console.log(thrownError);
         }
     });
 }
