@@ -501,6 +501,8 @@ function publishStory() {
     var title = document.getElementById('storyTitle').value;
     var story = document.getElementById('storyDescription').value;
 
+    story = story.split('\n').join("\\n");
+
     if (story == "")
     {
         alertify.dialog('alert').set({
