@@ -483,6 +483,28 @@ function makeChanges(width, height) {
         $('#storySect2').css('display', 'block');
         $('#storySect3').css('width', '60%');
     }
+
+    if (width < 575) {
+        $('#introDialog').css('width', '100%');
+        $('#storyDialog').css('width', '100%');
+
+        $('#introText').css('width', '100%');
+    }
+    else {
+        $('#introDialog').css('width', '60%');
+        $('#storyDialog').css('width', '70%');
+
+        $('#introText').css('width', '80%');
+    }
+
+    if (height < 600) {
+        $('#introDialog').css('height', '100%');
+        $('#storyDialog').css('height', '100%');
+    }
+    else {
+        $('#introDialog').css('height', '80%');
+        $('#storyDialog').css('height', '80%');
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
