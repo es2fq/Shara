@@ -246,16 +246,19 @@ function getMarkersFromFile() {
         
         for (i = 0; i < text.length; i++)
         {
-            var line = text[i].split(',');
+            var line = text[i].split('|||');
             if (line.length != 4) return;
 
             var lat = parseFloat(line[0]);
             var lng = parseFloat(line[1]);
 
             var title = line[2];
-            var desc  = line[3];
+            var story = line[3];
 
-            createBlueMarker(map, { lat: lat, lng: lng }, title, desc);
+            story = story.split("\\n").join("<br />");
+            console.log(story);
+
+            createBlueMarker(map, { lat: lat, lng: lng }, title, story);
         }
     }, 'text');
 }

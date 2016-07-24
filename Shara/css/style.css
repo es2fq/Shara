@@ -365,7 +365,7 @@ body {
     }
 
     #openButton:active {
-        color: #4d0000;
+        color: black;
     }
 
     #openButton:focus {
