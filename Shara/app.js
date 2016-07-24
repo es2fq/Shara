@@ -538,9 +538,11 @@ function publishStory() {
             $(id).removeClass('active');
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            console.log(xhr.status);
-            console.log(xhr.responseText);
-            console.log(thrownError);
+            alertify.dialog('alert').set({
+                message: 'Please try again!',
+                title: "Error",
+                transition: 'fade',
+            }).show();
         }
     });
 }
