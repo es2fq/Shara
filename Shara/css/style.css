@@ -373,16 +373,17 @@ body {
     }
 
 #searchBox {
+    width: 25%;
+    height: 37px;
     background-color: #fff;
     color: black;
     font-family: Roboto;
     font-size: 15px;
     font-weight: 300;
-    margin-top: 12px;
+    margin-top: 10px;
     margin-right: 10px;
     padding: 0 11px 0 13px;
     text-overflow: ellipsis;
-    width: 25%;
 }
 
     #searchBox:focus {

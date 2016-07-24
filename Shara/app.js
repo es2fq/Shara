@@ -499,6 +499,11 @@ function makeChanges(width, height) {
         $('#storyText').css('width', '90%');
     }
 
+    if (width < 700)
+        $('#searchBox').css('width', '50%');
+    else
+        $('#searchBox').css('width', '25%');
+
     if (height < 600) {
         $('#introDialog').css('height', '100%');
         $('#storyDialog').css('height', '100%');
