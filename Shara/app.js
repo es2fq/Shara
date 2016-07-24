@@ -186,7 +186,7 @@ function createBlueMarker(map, pos, title, desc, time) {
 
     var contentString = 
         '<div id="blueMarker">' +
-            '<div id="time">' + time + '</div>' +
+            '<div id="blueMarkerTime">' + time + '</div>' +
             '<div id="title">' + title + '</div>' +
             '<div id="desc">' + desc + '</div>' +
         '</div>';
@@ -444,12 +444,14 @@ function getDateTimeString() {
     var hours   = date.getHours();
     var minutes = date.getMinutes();
     var seconds = date.getSeconds();
+    var ampm = "PM";
 
+    if (hours < 12) ampm = "AM";
     if (hours == 12) hours = 12; else hours = hours % 12;
     if (minutes < 10) minutes = "0" + minutes;
     if (seconds < 10) seconds = "0" + seconds;
 
-    var str = dayName + ", " + dayNum + " " + month + " " + year + " " + hours + ":" + minutes + ":" + seconds;
+    var str = dayName + ", " + dayNum + " " + month + " " + year + " " + hours + ":" + minutes + ":" + seconds + " " + ampm;
     return str;
 }
 
@@ -519,6 +521,11 @@ function makeChanges(width, height) {
         $('#introDialog').css('height', '80%');
         $('#storyDialog').css('height', '80%');
     }
+
+    if (height < 550)
+        $('#blueMarkerTime').css('display', 'none');
+    else
+        $('#blueMarkerTime').css('display', 'block');
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

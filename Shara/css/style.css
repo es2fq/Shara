@@ -57,7 +57,7 @@ body {
     max-width: 300px;
 }
 
-    #blueMarker #time {
+    #blueMarker #blueMarkerTime {
         font-size: 18px;
         margin-top: 15px;
         text-align: left;
