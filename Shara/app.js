@@ -13,8 +13,6 @@ function initMap() {
         styles: mapStyle
     });
 
-    createMarkerWithStoryButton(map, defaultPos);
-
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
             var pos = {
@@ -33,6 +31,15 @@ function initMap() {
         for (i = 0; i < infoWindows.length; i++)
             infoWindows[i].close();
     });
+
+    google.maps.event.addListener(map, "rightclick", function (event) {
+        var pos = {
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng()
+        };
+
+        createMarkerWithStoryButton(map, pos);
+    })
 
     // Create the search box and link it to the UI element.
     var input = document.getElementById('searchBox');
