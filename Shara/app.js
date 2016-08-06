@@ -182,6 +182,8 @@ function createMarkerWithStoryButton(map, pos)
 }
 
 function createBlueMarker(map, pos, title, desc, time) {
+    desc = desc.split("\\n").join("<br />");
+
     var iconBase = 'img/map-marker2.png';
 
     var marker = new google.maps.Marker({
@@ -268,8 +270,6 @@ function getMarkersFromFile() {
             var story = line[3];
             
             var time = line[4];
-
-            story = story.split("\\n").join("<br />");
 
             createBlueMarker(map, { lat: lat, lng: lng }, title, story, time);
         }
