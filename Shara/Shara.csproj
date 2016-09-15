@@ -20,8 +20,8 @@
   <ItemGroup>
     <Content Include="app.css" />
     <Content Include="css\style.css" />
+    <Content Include="home.html" />
     <Content Include="index.html" />
-    <Content Include="map.html" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
