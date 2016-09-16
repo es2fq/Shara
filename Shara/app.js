@@ -181,7 +181,7 @@ function createMarkerWithStoryButton(map, pos)
     infoBox.open(map, marker);
 }
 
-function createBlueMarker(map, pos, title, desc, time) {
+function createBlueMarker(map, pos, title, desc, time, votes) {
     desc = desc.split("\\n").join("<br />");
 
     var iconBase = 'img/map-marker2.png';
@@ -193,11 +193,15 @@ function createBlueMarker(map, pos, title, desc, time) {
         icon: iconBase
     });
 
-    var contentString = 
+    var contentString =
         '<div id="blueMarker">' +
             '<div id="blueMarkerTime">' + time + '</div>' +
             '<div id="title">' + title + '</div>' +
             '<div id="desc">' + desc + '</div>' +
+            '<div id="votes">' +
+                '<div id="vote">Popularity - ' + votes + '</div>' +
+                '<img id="upvote" onclick="handleUpvote(this)" src="img/upvote.jpg" />' +
+            '</div>' +
         '</div>';
 
     var infoWindow = new google.maps.InfoWindow({
@@ -252,6 +256,17 @@ function createBlueMarker(map, pos, title, desc, time) {
     });
 }
 
+function handleUpvote(elem) {
+    elem.style.opacity = 0.7;
+
+    var voteString = elem.previousSibling;
+    var votes = parseInt(voteString.innerHTML.replace(/^\D+/g, ''));
+
+    voteString.innerHTML = "Popularity - " + (votes + 1);
+
+    var desc = elem.parentElement.previousSibling;
+}
+
 function getMarkersFromFile() {
     var file = "markers.txt";
 
@@ -261,7 +276,7 @@ function getMarkersFromFile() {
         for (i = 0; i < text.length; i++)
         {
             var line = text[i].split('|||');
-            if (line.length != 5) return;
+            if (line.length != 6) continue;
 
             var lat = parseFloat(line[0]);
             var lng = parseFloat(line[1]);
@@ -271,7 +286,9 @@ function getMarkersFromFile() {
             
             var time = line[4];
 
-            createBlueMarker(map, { lat: lat, lng: lng }, title, story, time);
+            var votes = parseInt(line[5]);
+
+            createBlueMarker(map, { lat: lat, lng: lng }, title, story, time, votes);
         }
     }, 'text');
 }
@@ -578,7 +595,8 @@ function publishStory() {
             lng: lng,
             title: title,
             story: story,
-            time: time
+            time: time,
+            upvotes: 0
         },
         success: function () {
             alertify.dialog('alert').set({
@@ -586,7 +604,7 @@ function publishStory() {
                 title: "Congratulations!",
                 transition: 'fade',
             }).show();
-            createBlueMarker(map, { lat: parseFloat(lat), lng: parseFloat(lng) }, title, story, time);
+            createBlueMarker(map, { lat: parseFloat(lat), lng: parseFloat(lng) }, title, story, time, 0);
             infoBox.close();
             deleteMarker(id);
             $('#mask, .window').hide();

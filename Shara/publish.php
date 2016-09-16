@@ -5,6 +5,7 @@ $lng = $_POST['lng'];
 $title = $_POST['title'];
 $story = $_POST['story'];
 $time = $_POST['time'];
+$upvotes = $_POST['upvotes'];
 
 $filename = "markers.txt";
 
@@ -15,7 +16,8 @@ $string .= $lat . "|||";
 $string .= $lng . "|||";
 $string .= $title . "|||";
 $string .= $story . "|||";
-$string .= $time;
+$string .= $time . "|||";
+$string .= $upvotes;
 
 fwrite($file, $string);
 
