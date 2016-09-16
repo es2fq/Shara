@@ -258,13 +258,33 @@ function createBlueMarker(map, pos, title, desc, time, votes) {
 
 function handleUpvote(elem) {
     elem.style.opacity = 0.7;
+    elem.onclick = "";
 
     var voteString = elem.previousSibling;
     var votes = parseInt(voteString.innerHTML.replace(/^\D+/g, ''));
-
     voteString.innerHTML = "Popularity - " + (votes + 1);
 
-    var desc = elem.parentElement.previousSibling;
+    var time = elem.parentElement.previousSibling.previousSibling.previousSibling.innerHTML;
+    console.log(time);
+
+    var url = "upvote.php";
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: {
+            time: time
+        },
+        success: function () {
+
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alertify.dialog('alert').set({
+                message: 'Please try again!',
+                title: "Error",
+                transition: 'fade',
+            }).show();
+        }
+    });
 }
 
 function getMarkersFromFile() {
