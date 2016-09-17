@@ -182,7 +182,7 @@ function createMarkerWithStoryButton(map, pos)
     infoBox.open(map, marker);
 }
 
-function createBlueMarker(user, map, pos, title, desc, time, votes) {
+function createBlueMarker(user, map, pos, title, desc, time, votes, userUpvotes) {
     desc = desc.split("\\n").join("<br />");
 
     var iconBase = 'img/map-marker2.png';
@@ -199,6 +199,16 @@ function createBlueMarker(user, map, pos, title, desc, time, votes) {
 
     blueMarkers.push(marker);
 
+    var onclick = 'onclick="handleUpvote(this)"';
+    var markerStyle = '';
+
+    var usersThatUpvoted = userUpvotes.split(",");
+    if (usersThatUpvoted.indexOf(sessionUser) > -1)
+    {
+        onclick = 'onclick=""';
+        markerStyle = 'style="opacity:0.7;"';
+    }
+
     var contentString =
         '<div id="blueMarker">' +
             '<div id="blueMarkerTime">' + time + '</div>' +
@@ -206,7 +216,7 @@ function createBlueMarker(user, map, pos, title, desc, time, votes) {
             '<div id="desc">' + desc + '</div>' +
             '<div id="votes">' +
                 '<div id="vote">Popularity - ' + votes + '</div>' +
-                '<img id="upvote" onclick="handleUpvote(this)" src="img/upvote.jpg" />' +
+                '<img id="upvote" ' + onclick + ' ' + markerStyle + ' src="img/upvote.jpg" />' +
             '</div>' +
         '</div>';
 
@@ -455,7 +465,7 @@ function getMarkersFromFile() {
         for (i = 0; i < text.length; i++)
         {
             var line = text[i].split('|||');
-            if (line.length != 7) continue;
+            if (line.length != 8) continue;
 
             var user = line[0];
 
@@ -468,8 +478,9 @@ function getMarkersFromFile() {
             var time = line[5];
 
             var votes = parseInt(line[6]);
+            var userUpvotes = line[7];
 
-            createBlueMarker(user, map, { lat: lat, lng: lng }, title, story, time, votes);
+            createBlueMarker(user, map, { lat: lat, lng: lng }, title, story, time, votes, userUpvotes);
         }
     }, 'text');
 }
@@ -794,7 +805,7 @@ function publishStory() {
                 title: "Congratulations!",
                 transition: 'fade',
             }).show();
-            createBlueMarker(user, map, { lat: parseFloat(lat), lng: parseFloat(lng) }, title, story, time, 0);
+            createBlueMarker(user, map, { lat: parseFloat(lat), lng: parseFloat(lng) }, title, story, time, 0, "");
             infoBox.close();
             deleteMarker(id);
             $('#mask, .window').hide();

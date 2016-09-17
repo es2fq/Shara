@@ -18,6 +18,11 @@ for ($i = 0; $i < count($data); $i++)
 		$votes = (int) $line[6];
 		$newVotes = $votes + 1;
 		$line[6] = (string) $newVotes;
+
+		if ($line[7] == "")
+			$line[7] = $line[7] . $user;
+		else
+			$line[7] = $line[7] . "," . $user;
 		
 		$data[$i] = implode("|||", $line);
 		break;
