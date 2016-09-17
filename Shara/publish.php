@@ -1,5 +1,6 @@
 <?php
 
+$user = $_POST['user'];
 $lat = $_POST['lat'];
 $lng = $_POST['lng'];
 $title = $_POST['title'];
@@ -12,6 +13,7 @@ $filename = "markers.txt";
 $file = fopen($filename, "a");
 
 $string = "\n";
+$string .= $user . "|||";
 $string .= $lat . "|||";
 $string .= $lng . "|||";
 $string .= $title . "|||";

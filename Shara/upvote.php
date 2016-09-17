@@ -2,7 +2,7 @@
 
 $time = $_POST['time'];
 
-$filename = "testMarkers.txt";
+$filename = "markers.txt";
 $file = fopen($filename, "r+");
 
 $theCount = 0;
@@ -13,7 +13,7 @@ while (!feof($file))
 	$line = fgets($file);
 	$data = explode("|||", $line);
 
-	if ($data[4] == $time)
+	if ($data[5] == $time)
 	{
 		$theLine = $line;
 		break;
@@ -29,16 +29,10 @@ while (!feof($file))
 {
 	if ($count == $theCount)
 	{
-		echo $theLine . "<br>";
-
 		$data = explode("|||", $theLine);
 
-		echo $data[5];
-
-		$votes = (int) $data[5];
-		$data[5] = (string) ($votes + 1);
-
-		echo $data[5];
+		$votes = (int) $data[6];
+		$data[6] = (string) ($votes + 1);
 
 		$data = implode("|||", $data);
 

@@ -1,8 +1,9 @@
 var map;
-var id = null, markers = {};
+var id = null, markers = {}, blueMarkers = [];
 var infoBox = null;
 var infoWindows = [];
 var mapStyle = [{ "featureType": "all", "elementType": "all", "stylers": [{ "hue": "#ff0000" }, { "saturation": -100 }, { "lightness": -30 }] }, { "featureType": "all", "elementType": "labels.text.fill", "stylers": [{ "color": "#ffffff" }] }, { "featureType": "all", "elementType": "labels.text.stroke", "stylers": [{ "color": "#353535" }] }, { "featureType": "landscape", "elementType": "geometry", "stylers": [{ "color": "#656565" }] }, { "featureType": "poi", "elementType": "geometry.fill", "stylers": [{ "color": "#505050" }] }, { "featureType": "poi", "elementType": "geometry.stroke", "stylers": [{ "color": "#808080" }] }, { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#454545" }] }, { "featureType": "transit", "elementType": "labels", "stylers": [{ "hue": "#000000" }, { "saturation": 100 }, { "lightness": -40 }, { "invert_lightness": true }, { "gamma": 1.5 }] }];
+var sessionUser = "~";
 
 function initMap() {
     defaultPos = { lat: 38.8899, lng: -77.009 };
@@ -181,10 +182,13 @@ function createMarkerWithStoryButton(map, pos)
     infoBox.open(map, marker);
 }
 
-function createBlueMarker(map, pos, title, desc, time, votes) {
+function createBlueMarker(user, map, pos, title, desc, time, votes) {
     desc = desc.split("\\n").join("<br />");
 
     var iconBase = 'img/map-marker2.png';
+
+    if (sessionUser == user)
+        iconBase = 'img/map-marker3.png';
 
     var marker = new google.maps.Marker({
         draggable: false,
@@ -192,6 +196,8 @@ function createBlueMarker(map, pos, title, desc, time, votes) {
         map: map,
         icon: iconBase
     });
+
+    blueMarkers.push(marker);
 
     var contentString =
         '<div id="blueMarker">' +
@@ -265,7 +271,6 @@ function handleUpvote(elem) {
     voteString.innerHTML = "Popularity - " + (votes + 1);
 
     var time = elem.parentElement.previousSibling.previousSibling.previousSibling.innerHTML;
-    console.log(time);
 
     var url = "upvote.php";
     $.ajax({
@@ -287,6 +292,150 @@ function handleUpvote(elem) {
     });
 }
 
+function handleLogin() {
+    alertify.dialog('prompt').set({
+        message: 'Username (anything you want!)',
+        title: "SIGN IN",
+        transition: 'fade',
+        type: 'text',
+        value: '',
+        onok: function (evt, value) {
+            if (value.length < 3)
+            {
+                alertify.dialog('alert').set({
+                    message: 'Username must be at least 3 characters!',
+                    title: "Try Again!",
+                    transition: 'pulse',
+                }).show();
+                return;
+            }
+            findUser(value);
+        },
+        oncancel: function (evt, value) {
+            return;
+        }
+    }).show();
+}
+
+function findUser(username)
+{
+    var isUser = false;
+    var password = "";
+
+    var file = "users.txt";
+    $.get(file, function (text) {
+        var lines = text.split("\n");
+
+        for (var i = 0; i < lines.length; i++)
+        {
+            var data = lines[i].split(",");
+            console.log(data);
+            if (username.toUpperCase() == data[0].toUpperCase())
+            {
+                isUser = true;
+                password = data[1].substring(0, data[1].length - 1);
+                break;
+            }
+        }
+        showPassword(isUser, username, password);
+    });
+}
+
+function showPassword(isUser, username, password)
+{
+    if (isUser) {
+        alertify.dialog('prompt').set({
+            message: 'Password (just so we know it\'s you!)',
+            title: "WELCOME BACK!",
+            transition: 'fade',
+            type: 'password',
+            value: '',
+            onok: function (evt, value) {
+                if (value == password) {
+                    signInUser(username, value, false);
+                }
+                else {
+                    alertify.dialog('alert').set({
+                        message: 'Wrong Password',
+                        title: "Try Again!",
+                        transition: 'pulse',
+                    }).show();
+                    return;
+                }
+            },
+            oncancel: function (evt, value) {
+                return;
+            }
+        }).show();
+    }
+    else {
+        alertify.dialog('prompt').set({
+            message: 'Set a password!',
+            title: "WELCOME!",
+            transition: 'fade',
+            type: 'password',
+            value: '',
+            onok: function (evt, value) {
+                if (value == "")
+                {
+                    alertify.dialog('alert').set({
+                        message: 'Password cannot be blank!',
+                        title: "Try Again!",
+                        transition: 'pulse',
+                    }).show();
+                    return;
+                }
+                signInUser(username, value, true);
+            },
+            oncancel: function (evt, value) {
+                return;
+            }
+        }).show();
+    }
+}
+
+function signInUser(username, password, newUser)
+{
+    sessionUser = username;
+
+    var user = document.getElementById("user");
+    user.innerHTML = "Welcome, " + username;
+
+    var userContainer = document.getElementById("userContainer");
+    userContainer.onclick = "";
+
+    if (newUser)
+    {
+        var url = "newuser.php";
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {
+                username: username,
+                password: password
+            },
+            success: function () {
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alertify.dialog('alert').set({
+                    message: 'Please try again!',
+                    title: "Error",
+                    transition: 'fade',
+                }).show();
+            }
+        });
+    }
+
+    updateUserMarkers();
+}
+
+function updateUserMarkers()
+{
+    clearBlueMarkers();
+    getMarkersFromFile();
+}
+
 function getMarkersFromFile() {
     var file = "markers.txt";
 
@@ -296,19 +445,21 @@ function getMarkersFromFile() {
         for (i = 0; i < text.length; i++)
         {
             var line = text[i].split('|||');
-            if (line.length != 6) continue;
+            if (line.length != 7) continue;
 
-            var lat = parseFloat(line[0]);
-            var lng = parseFloat(line[1]);
+            var user = line[0];
 
-            var title = line[2];
-            var story = line[3];
+            var lat = parseFloat(line[1]);
+            var lng = parseFloat(line[2]);
+
+            var title = line[3];
+            var story = line[4];
             
-            var time = line[4];
+            var time = line[5];
 
-            var votes = parseInt(line[5]);
+            var votes = parseInt(line[6]);
 
-            createBlueMarker(map, { lat: lat, lng: lng }, title, story, time, votes);
+            createBlueMarker(user, map, { lat: lat, lng: lng }, title, story, time, votes);
         }
     }, 'text');
 }
@@ -323,6 +474,12 @@ function isInfoWindowOpen(window)
 {
     var info = window.getMap();
     return (info !== null && typeof info !== "undefined");
+}
+
+function clearBlueMarkers() {
+    blueMarkers.forEach(function (blueMarker) {
+        blueMarker.setMap(null);
+    });
 }
 
 function closeBlueMarkerWindows() {
@@ -585,6 +742,8 @@ function publishDialog() {
 }
 
 function publishStory() {
+    var user = sessionUser;
+
     var title = document.getElementById('storyTitle').value;
     var story = document.getElementById('storyDescription').value;
 
@@ -611,6 +770,7 @@ function publishStory() {
         url: url,
         type: 'POST',
         data: {
+            user: user,
             lat: lat,
             lng: lng,
             title: title,
@@ -624,7 +784,7 @@ function publishStory() {
                 title: "Congratulations!",
                 transition: 'fade',
             }).show();
-            createBlueMarker(map, { lat: parseFloat(lat), lng: parseFloat(lng) }, title, story, time, 0);
+            createBlueMarker(user, map, { lat: parseFloat(lat), lng: parseFloat(lng) }, title, story, time, 0);
             infoBox.close();
             deleteMarker(id);
             $('#mask, .window').hide();
