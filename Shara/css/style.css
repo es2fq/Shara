@@ -371,6 +371,11 @@ body {
     margin-right: 5px;
 }
 
+#imgMarker3 {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 #login {
     float: right;
 }

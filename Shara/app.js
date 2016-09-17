@@ -329,7 +329,6 @@ function findUser(username)
         for (var i = 0; i < lines.length; i++)
         {
             var data = lines[i].split(",");
-            console.log(data);
             if (username.toUpperCase() == data[0].toUpperCase())
             {
                 isUser = true;
