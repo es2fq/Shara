@@ -1,49 +1,34 @@
 <?php
 
+$user = $_POST['user'];
 $time = $_POST['time'];
 
 $filename = "markers.txt";
-$file = fopen($filename, "r+");
 
 $theCount = 0;
 $theLine = "";
 
-while (!feof($file))
-{
-	$line = fgets($file);
-	$data = explode("|||", $line);
+$data = file($filename, FILE_IGNORE_NEW_LINES);
 
-	if ($data[5] == $time)
+for ($i = 0; $i < count($data); $i++)
+{
+	$line = explode("|||", $data[$i]);
+	if ($line[5] == $time)
 	{
-		$theLine = $line;
+		$votes = (int) $line[6];
+		$newVotes = $votes + 1;
+		$line[6] = (string) $newVotes;
+		
+		$data[$i] = implode("|||", $line);
 		break;
 	}
-
-	$theCount++;
 }
 
-rewind($file);
+$text = implode("\n", $data);
 
-$count = 0;
-while (!feof($file))
-{
-	if ($count == $theCount)
-	{
-		$data = explode("|||", $theLine);
+$file = fopen($filename, "w");
 
-		$votes = (int) $data[6];
-		$data[6] = (string) ($votes + 1);
-
-		$data = implode("|||", $data);
-
-		fwrite($file, $data);
-		break;
-	}
-
-	$line = fgets($file);
-
-	$count++;
-}
+fwrite($file, $text);
 
 fclose($file);
 

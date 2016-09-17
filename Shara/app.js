@@ -263,6 +263,16 @@ function createBlueMarker(user, map, pos, title, desc, time, votes) {
 }
 
 function handleUpvote(elem) {
+    if (sessionUser == "~")
+    {
+        alertify.dialog('alert').set({
+            message: 'You must be signed in to upvote!',
+            title: "NOT SIGNED IN",
+            transition: 'pulse',
+        }).show();
+        return;
+    }
+
     elem.style.opacity = 0.7;
     elem.onclick = "";
 
@@ -277,6 +287,7 @@ function handleUpvote(elem) {
         url: url,
         type: 'POST',
         data: {
+            user: sessionUser,
             time: time
         },
         success: function () {
@@ -332,7 +343,7 @@ function findUser(username)
             if (username.toUpperCase() == data[0].toUpperCase())
             {
                 isUser = true;
-                password = data[1].substring(0, data[1].length - 1);
+                password = data[1];
                 break;
             }
         }
