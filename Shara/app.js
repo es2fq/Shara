@@ -315,7 +315,7 @@ function handleUpvote(elem) {
 
 function handleLogin() {
     alertify.dialog('prompt').set({
-        message: 'Username (anything you want!)',
+        message: 'Username (min. 3 characters)',
         title: "SIGN IN",
         transition: 'fade',
         type: 'text',
