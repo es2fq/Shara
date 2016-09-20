@@ -349,7 +349,7 @@ function findUser(username)
 
         for (var i = 0; i < lines.length; i++)
         {
-            var data = lines[i].split(",");
+            var data = lines[i].split("/////");
             if (username.toUpperCase() == data[0].toUpperCase())
             {
                 isUser = true;
@@ -764,6 +764,8 @@ function publishDialog() {
 
 function publishStory() {
     var user = sessionUser;
+    if (user == "~")
+        user = "";
 
     var title = document.getElementById('storyTitle').value;
     var story = document.getElementById('storyDescription').value;

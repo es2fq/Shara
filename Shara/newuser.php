@@ -7,7 +7,7 @@ $filename = "users.txt";
 $file = fopen($filename, "a");
 
 $string = "\n";
-$string .= $username . ",";
+$string .= $username . "/////";
 $string .= $password;
 
 fwrite($file, $string);
