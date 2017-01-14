@@ -85,6 +85,28 @@ body {
         word-wrap: break-word;
     }
 
+    #blueMarker #votes {
+        width: 90%;
+        height: 40px;
+        font-size: 20px;
+        text-align: left;
+    }
+
+    #blueMarker #vote {
+        float: left;
+        margin-top: 2px;
+    }
+
+    #blueMarker #upvote {
+        margin-left: 10px;
+        opacity: 1;
+    }
+
+        #blueMarker #upvote:hover {
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
 #boxes {
 }
 
@@ -348,6 +370,19 @@ body {
     margin-left: 5px;
     margin-right: 5px;
 }
+
+#imgMarker3 {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#login {
+    float: right;
+}
+
+    #login:hover {
+        opacity: 0.7;
+    }
 
 #mask {
     position: absolute;

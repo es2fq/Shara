@@ -10,6 +10,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -20,8 +21,8 @@
   <ItemGroup>
     <Content Include="app.css" />
     <Content Include="css\style.css" />
+    <Content Include="home.html" />
     <Content Include="index.html" />
-    <Content Include="map.html" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
