@@ -22,10 +22,9 @@ function initMap() {
             };
 
             map.setCenter(pos);
-
-            createMarkerWithStoryButton(map, pos);
         });
     }
+    createMarkerWithStoryButton(map, pos);
 
     google.maps.event.addListener(map, "click", function (event) {
         infoBox.close();
