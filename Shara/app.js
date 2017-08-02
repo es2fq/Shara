@@ -23,12 +23,11 @@ function initMap() {
 
             map.setCenter(pos);
 
+            defaultPos = pos;
             createMarkerWithStoryButton(map, pos);
         });
     }
-    else {
-        createMarkerWithStoryButton(map, defaultPos);
-    }
+    createMarkerWithStoryButton(map, defaultPos);
 
     google.maps.event.addListener(map, "click", function (event) {
         infoBox.close();
