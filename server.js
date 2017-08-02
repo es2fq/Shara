@@ -8,9 +8,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + "/Shara/index.html"));
-});
 app.use('/', express.static(path.join(__dirname + '/Shara')));
 
 app.listen(port, function() {
