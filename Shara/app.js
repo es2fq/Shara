@@ -22,8 +22,9 @@ function initMap() {
             };
 
             map.setCenter(pos);
+
+            createMarkerWithStoryButton(map, pos);
         });
-        createMarkerWithStoryButton(map, pos);
     }
     else {
         createMarkerWithStoryButton(map, defaultPos);
