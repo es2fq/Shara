@@ -1,2 +1,2 @@
 # Shara
-# www.shara.tech
+# sharamap.herokuapp.com
